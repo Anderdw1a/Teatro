@@ -11,6 +11,28 @@
   --font-display: "Bebas Neue", sans-serif;
   --font-body: "Helvetica Neue", sans-serif;
 
+  /* Typography — Scale */
+  --text-caption: 19px;
+  --leading-caption: 1.32;
+  --text-subheading: 40px;
+  --leading-subheading: 1.08;
+  --text-heading: 145px;
+  --leading-heading: 0.7;
+  --tracking-heading: -0.02px;
+  --text-display: 360px;
+  --leading-display: 0.7;
+  --tracking-display: -0.079px;
+
+  /* Spacing */
+  --spacing-7: 7px;
+  --spacing-15: 15px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-30: 30px;
+  --spacing-50: 50px;
+  --spacing-59: 59px;
+  --spacing-127: 127px;
+
   /* Radius */
   --radius-pill: 32px;
   --radius-buttons: 100px;

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'eu' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+
+const titles = {
+  es: 'Inicio',
+  eu: 'Hasiera',
+  en: 'Home',
+};
+
+const title = titles[lang as keyof typeof titles];
+---
+
+<BaseLayout title={title} lang={lang}>
+  <section class="bg-alert-red py-20 flex flex-col items-center justify-center text-midnight-ink overflow-hidden min-h-[60vh]">
+    <div class="max-w-[1306px] w-full px-5 text-center">
+      <h1 class="font-display text-[145px] md:text-[360px] tracking-[-0.079em] leading-[0.7] uppercase select-none">
+        ORTZAI
+      </h1>
+    </div>
+  </section>
+  <main class="py-20 text-center">
+    <div class="max-w-[1306px] mx-auto px-5">
+      <h2 class="text-subheading font-body leading-subheading">
+        Teatro · Antzerkia · Theatre
+      </h2>
+    </div>
+  </main>
+</BaseLayout>
