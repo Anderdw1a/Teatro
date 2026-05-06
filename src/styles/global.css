@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-midnight-ink: #0D0D0D;
+  --color-paper-white: #F0F0F0;
+  --color-concrete-gray: #525252;
+  --color-alert-red: #A30000;
+
+  /* Typography */
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Helvetica Neue", sans-serif;
+
+  /* Radius */
+  --radius-pill: 32px;
+  --radius-buttons: 100px;
+}
+
+@layer base {
+  body {
+    @apply bg-midnight-ink text-paper-white font-body;
+  }
+}
