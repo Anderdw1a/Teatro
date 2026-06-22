@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
 
 export function getStaticPaths() {
   return [
@@ -9,30 +10,83 @@ export function getStaticPaths() {
   ];
 }
 
-const { lang } = Astro.params;
+const { lang } = Astro.params as { lang: 'es' | 'eu' | 'en' };
 
 const titles = {
-  es: 'Inicio',
-  eu: 'Hasiera',
-  en: 'Home',
+  es: 'Teatro Bilingüe en Vitoria-Gasteiz',
+  eu: 'Gasteizko Antzerki Bilinguea',
+  en: 'Bilingual Theatre in Vitoria-Gasteiz',
 };
 
-const title = titles[lang as keyof typeof titles];
+const title = titles[lang];
 ---
 
 <BaseLayout title={title} lang={lang}>
-  <section class="bg-alert-red py-20 flex flex-col items-center justify-center text-midnight-ink overflow-hidden min-h-[60vh]">
-    <div class="max-w-[1306px] w-full px-5 text-center">
-      <h1 class="font-display text-[145px] md:text-[360px] tracking-[-0.079em] leading-[0.7] uppercase select-none">
-        ORTZAI
+  <Navigation lang={lang} />
+  <section class="relative bg-alert-red py-40 flex flex-col items-center justify-center text-midnight-ink overflow-hidden min-h-[80vh] px-5 mb-10 group">
+    <div class="absolute inset-0 z-0 overflow-hidden">
+      <img 
+        src="https://images.unsplash.com/photo-1503095396549-807039045349?auto=format&fit=crop&q=80&w=2000" 
+        alt="Theatre background" 
+        class="w-full h-full object-cover opacity-30 mix-blend-multiply grayscale contrast-150 transition-transform duration-700 group-hover:scale-105"
+      />
+      <div class="absolute inset-0 bg-alert-red/40 mix-blend-overlay"></div>
+    </div>
+    <div class="max-w-page w-full px-5 text-center relative z-10">
+      <h1 class="font-display text-[145px] md:text-display tracking-display leading-[0.7] uppercase select-none flex justify-center flex-wrap" id="hero-title">
+        {"ORTZAI".split("").map((letter) => (
+          <span class="inline-block opacity-0 translate-y-20">{letter}</span>
+        ))}
       </h1>
+      <p class="mt-8 text-caption font-body uppercase tracking-widest opacity-0" id="hero-subtitle">
+        Vitoria-Gasteiz
+      </p>
     </div>
   </section>
-  <main class="py-20 text-center">
-    <div class="max-w-[1306px] mx-auto px-5">
-      <h2 class="text-subheading font-body leading-subheading">
+
+  <script>
+    import { animate, stagger } from "motion";
+    
+    // Animate letters
+    animate(
+      "#hero-title span",
+      { opacity: [0, 1], y: [80, 0] },
+      { 
+        duration: 1, 
+        delay: stagger(0.1, { start: 0.5 }),
+        easing: [0.22, 1, 0.36, 1]
+      }
+    );
+
+    // Animate subtitle
+    animate(
+      "#hero-subtitle",
+      { opacity: [0, 1] },
+      { duration: 1, delay: 1.5 }
+    );
+  </script>
+
+  <main class="py-40 text-center border-t border-border-subtle">
+    <div class="max-w-page mx-auto px-5">
+      <h2 class="text-subheading font-body leading-subheading uppercase tracking-widest mb-16">
         Teatro · Antzerkia · Theatre
       </h2>
+      
+      <div class="max-w-[60ch] mx-auto space-y-12">
+        <p class="text-2xl font-body text-text-muted leading-relaxed">
+          {lang === 'es' ? 'Ortzai es un laboratorio de teatro independiente en Vitoria-Gasteiz dedicado a la producción bilingüe en euskera y castellano.' : 
+           lang === 'eu' ? 'Ortzai Gasteizko antzerki laborategi independentea da, euskarazko eta gaztelaniazko ekoizpen bilinguean jarduten duena.' : 
+           'Ortzai is an independent theatre laboratory in Vitoria-Gasteiz dedicated to bilingual production in Basque and Spanish.'}
+        </p>
+        
+        <div class="pt-12 border-t border-border-subtle inline-block">
+          <p class="font-display text-4xl text-alert-red uppercase tracking-widest">
+            {lang === 'es' ? 'Cultura Viva en el Corazón de Vitoria' : 
+             lang === 'eu' ? 'Kultura Bizia Gasteizko Bihotzean' : 
+             'Live Culture in the Heart of Vitoria'}
+          </p>
+        </div>
+      </div>
     </div>
   </main>
 </BaseLayout>

@@ -1,0 +1,26 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  eyebrow?: string;
+  class?: string;
+}
+
+const { title, subtitle, eyebrow, class: className } = Astro.props;
+---
+
+<section class:list={["max-w-page mx-auto px-5 py-20 md:py-32 animate-reveal", className]} id="main-content">
+  {eyebrow && (
+    <span class="text-alert-red font-display text-2xl mb-8 block tracking-widest uppercase">
+      {eyebrow}
+    </span>
+  )}
+  <h1 class="text-[120px] md:text-display leading-[0.7] uppercase font-display tracking-display mb-12 text-balance">
+    {title}
+  </h1>
+  {subtitle && (
+    <p class="text-subheading font-body text-text-muted leading-tight max-w-[40ch] text-pretty">
+      {subtitle}
+    </p>
+  )}
+</section>

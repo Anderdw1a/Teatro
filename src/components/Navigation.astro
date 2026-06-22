@@ -1,15 +1,82 @@
 ---
 import Button from './Button.astro';
+
+interface Props {
+  lang: 'es' | 'eu' | 'en';
+}
+
+const { lang } = Astro.props;
+
+const labels = {
+  es: { 
+    producciones: 'Producciones', 
+    formacion: 'Formación', 
+    equipo: 'Equipo',
+    escuela: 'Escuela',
+    contacto: 'Contacto' 
+  },
+  eu: { 
+    producciones: 'Produkzioak', 
+    formacion: 'Prestakuntza', 
+    equipo: 'Taldea',
+    escuela: 'Eskola',
+    contacto: 'Kontaktua' 
+  },
+  en: { 
+    producciones: 'Productions', 
+    formacion: 'Training', 
+    equipo: 'Team',
+    escuela: 'School',
+    contacto: 'Contact' 
+  },
+};
+
+const t = labels[lang] || labels.es;
+
+const currentPath = Astro.url.pathname;
+const isPage = (path: string) => currentPath.includes(path);
 ---
 
-<nav class="flex items-center justify-between py-8">
-  <a href="/" class="font-display text-4xl tracking-wider hover:text-concrete-gray transition-colors">
-    ORTZAI
-  </a>
-  
-  <div class="flex gap-4">
-    <Button href="/producciones">Producciones</Button>
-    <Button href="/formacion">Formación</Button>
-    <Button variant="filled" href="/contacto">Contacto</Button>
-  </div>
-</nav>
+<header class="max-w-page mx-auto px-5" role="banner">
+  <nav class="flex flex-col md:flex-row items-center justify-between py-16 gap-12" aria-label="Main navigation">
+    <a 
+      href={`/${lang}`} 
+      class="font-display text-heading md:text-display leading-[0.7] hover:text-alert-red transition-colors duration-duration-normal uppercase tracking-display group outline-none focus-visible:ring-2 focus-visible:ring-alert-red focus-visible:ring-offset-4 focus-visible:ring-offset-midnight-ink"
+      aria-label="ORTZAI - Home"
+    >
+      ORTZAI<span class="text-alert-red opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">.</span>
+    </a>
+    
+    <div class="flex flex-wrap justify-center md:justify-end gap-4">
+      <Button 
+        href={`/${lang}/producciones`} 
+        variant={isPage('producciones') ? 'filled' : 'ghost'}
+        aria-current={isPage('producciones') ? 'page' : undefined}
+      >
+        {t.producciones}
+      </Button>
+      <Button 
+        href={`/${lang}/formacion`}
+        variant={isPage('formacion') ? 'filled' : 'ghost'}
+        aria-current={isPage('formacion') ? 'page' : undefined}
+      >
+        {t.formacion}
+      </Button>
+      <Button 
+        href={`/${lang}/equipo`}
+        variant={isPage('equipo') ? 'filled' : 'ghost'}
+        aria-current={isPage('equipo') ? 'page' : undefined}
+      >
+        {t.equipo}
+      </Button>
+      <Button 
+        href={`/${lang}/contacto`}
+        variant={isPage('contacto') ? 'filled' : 'ghost'}
+        aria-current={isPage('contacto') ? 'page' : undefined}
+        class="border-alert-red text-alert-red hover:bg-alert-red hover:text-midnight-ink focus-visible:ring-alert-red"
+      >
+        {t.contacto}
+      </Button>
+    </div>
+  </nav>
+</header>

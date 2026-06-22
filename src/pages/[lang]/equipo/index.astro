@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navigation from '../../../components/Navigation.astro';
+import Hero from '../../../components/Hero.astro';
+import Card from '../../../components/Card.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'eu' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'es' | 'eu' | 'en' };
+
+const members = await getCollection('equipo', ({ data }) => {
+  return data.lang === lang;
+});
+
+const titles = {
+  es: 'Equipo',
+  eu: 'Taldea',
+  en: 'Team'
+};
+---
+
+<BaseLayout title={titles[lang]} lang={lang}>
+  <Navigation lang={lang} />
+  
+  <main>
+    <Hero title={titles[lang]} />
+
+    <div class="max-w-page mx-auto px-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-32 mb-40">
+      {members.map((member) => (
+        <Card
+          href="#"
+          title={member.data.name}
+          eyebrow={member.data.role}
+          image={member.data.image}
+          aspect="3/4"
+          variant="large"
+          class="md:mt-0"
+        >
+          <p class="font-body text-xl leading-relaxed text-concrete-gray mt-6 group-hover:text-paper-white transition-colors duration-500">
+            {member.data.bio}
+          </p>
+        </Card>
+      ))}
+    </div>
+  </main>
+</BaseLayout>

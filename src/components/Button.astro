@@ -11,7 +11,7 @@ interface Props {
 
 const { href, variant = 'ghost', class: className, ...rest } = Astro.props;
 
-const baseStyles = 'px-5 py-2 rounded-[32px] font-body text-[19px] transition-colors border-2 text-center inline-block cursor-pointer';
+const baseStyles = 'px-[20px] py-[7px] rounded-full font-body text-caption transition-[background-color,color,transform,border-color] duration-duration-fast border-2 text-center inline-block cursor-pointer uppercase tracking-widest active:scale-[0.97] tactile outline-none focus-visible:ring-2 focus-visible:ring-alert-red focus-visible:ring-offset-2 focus-visible:ring-offset-midnight-ink';
 
 const variants = {
   ghost: 'border-paper-white text-paper-white bg-transparent hover:bg-paper-white hover:text-midnight-ink',

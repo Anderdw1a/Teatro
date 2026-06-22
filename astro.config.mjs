@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config';
 import tailwindv4 from '@tailwindcss/vite';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
   i18n: {
@@ -11,7 +13,10 @@ export default defineConfig({
       fallbackType: 'redirect',
     },
   },
+
   vite: {
     plugins: [tailwindv4()],
   },
+
+  integrations: [sitemap()],
 });

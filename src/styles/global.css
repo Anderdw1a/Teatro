@@ -2,10 +2,16 @@
 
 @theme {
   /* Colors */
-  --color-midnight-ink: #0D0D0D;
-  --color-paper-white: #F0F0F0;
-  --color-concrete-gray: #525252;
-  --color-alert-red: #A30000;
+  --color-midnight-ink: #0a0a0a;
+  --color-paper-white: #ffffff;
+  --color-concrete-gray: #838383;
+  --color-alert-red: #ff0000;
+
+  /* Semantic Colors */
+  --color-surface-subtle: #121212;
+  --color-surface-overlay: rgba(255, 0, 0, 0.4);
+  --color-text-muted: #838383;
+  --color-border-subtle: rgba(255, 255, 255, 0.2);
 
   /* Typography */
   --font-display: "Bebas Neue", sans-serif;
@@ -18,10 +24,16 @@
   --leading-subheading: 1.08;
   --text-heading: 145px;
   --leading-heading: 0.7;
-  --tracking-heading: -0.02px;
+  --tracking-heading: -0.02em;
   --text-display: 360px;
   --leading-display: 0.7;
-  --tracking-display: -0.079px;
+  --tracking-display: -0.079em;
+
+  /* Typography — Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 
   /* Spacing */
   --spacing-7: 7px;
@@ -34,12 +46,77 @@
   --spacing-127: 127px;
 
   /* Radius */
-  --radius-pill: 32px;
+  --radius-pill: 100px;
   --radius-buttons: 100px;
+
+  /* Layout */
+  --width-page: 1306px;
+
+  /* Animations */
+  --animate-reveal: reveal 0.8s var(--ease-smooth) forwards;
+  --animate-float: float 6s ease-in-out infinite;
+
+  /* Easings */
+  --ease-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Durations */
+  --duration-fast: 200ms;
+  --duration-normal: 500ms;
+  --duration-slow: 800ms;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @layer base {
   body {
-    @apply bg-midnight-ink text-paper-white font-body;
+    @apply bg-midnight-ink text-paper-white font-body antialiased selection:bg-alert-red selection:text-midnight-ink;
+    min-height: 100dvh;
+    text-rendering: optimizeLegibility;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.05;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display uppercase leading-none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 1px var(--color-paper-white);
+    color: transparent;
+  }
+
+  .tactile {
+    @apply active:scale-[0.97] transition-transform duration-200;
   }
 }

@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navigation from '../../../components/Navigation.astro';
+import Hero from '../../../components/Hero.astro';
+import Card from '../../../components/Card.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'eu' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'es' | 'eu' | 'en' };
+
+const allProductions = await getCollection('producciones', ({ data }) => {
+  return data.lang === lang;
+});
+
+// Sort by year descending
+const productions = allProductions.sort((a, b) => b.data.year - a.data.year);
+
+const labels = {
+  es: { title: 'Producciones', next: 'Próximamente más producciones.' },
+  eu: { title: 'Produkzioak', next: 'Laster ekoizpen gehiago.' },
+  en: { title: 'Productions', next: 'More productions coming soon.' }
+};
+
+const t = labels[lang];
+---
+
+<BaseLayout title={t.title} lang={lang}>
+  <Navigation lang={lang} />
+  
+  <main>
+    <Hero title={t.title} />
+
+    <div class="max-w-page mx-auto px-5 grid grid-cols-1 md:grid-cols-12 gap-y-32 gap-x-12 mb-40">
+      {productions.map((prod, index) => {
+        const slug = prod.id.split('/').pop()?.replace(/\.md$/, '');
+        return (
+          <Card 
+            href={`/${lang}/producciones/${slug}`}
+            title={prod.data.title}
+            eyebrow={prod.data.year.toString()}
+            image={prod.data.image}
+            variant={index % 2 === 0 ? 'large' : 'small'}
+          />
+        );
+      })}
+    </div>
+    
+    {productions.length === 0 && (
+      <div class="max-w-page mx-auto px-5 py-40 border-t-2 border-paper-white">
+        <p class="text-[60px] font-display uppercase leading-none opacity-30 max-w-[10ch]">
+          {t.next}
+        </p>
+      </div>
+    )}
+  </main>
+</BaseLayout>

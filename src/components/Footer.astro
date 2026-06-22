@@ -1,0 +1,47 @@
+---
+interface Props {
+  lang: 'es' | 'eu' | 'en';
+}
+
+const { lang } = Astro.props;
+
+const labels = {
+  es: {
+    rights: 'Todos los derechos reservados',
+    address: 'Vitoria-Gasteiz, Álava',
+  },
+  eu: {
+    rights: 'Eskubide guztiak erreserbatuta',
+    address: 'Gasteiz, Araba',
+  },
+  en: {
+    rights: 'All rights reserved',
+    address: 'Vitoria-Gasteiz, Spain',
+  }
+};
+
+const t = labels[lang] || labels.es;
+---
+
+<footer class="border-t-2 border-paper-white mt-40 py-20">
+  <div class="max-w-page mx-auto px-5">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12">
+      <div>
+        <div class="font-display text-heading leading-none mb-8">ORTZAI<span class="text-alert-red">.</span></div>
+        <p class="font-body text-caption text-text-muted uppercase tracking-widest">
+          {t.address}
+        </p>
+      </div>
+      
+      <div class="flex flex-col items-start md:items-end gap-4">
+        <div class="flex gap-8">
+          <a href="#" class="font-display text-2xl hover:text-alert-red transition-colors">INSTAGRAM</a>
+          <a href="#" class="font-display text-2xl hover:text-alert-red transition-colors">FACEBOOK</a>
+        </div>
+        <p class="font-body text-[12px] opacity-30 uppercase tracking-tighter">
+          © {new Date().getFullYear()} ORTZAI — {t.rights}
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

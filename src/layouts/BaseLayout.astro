@@ -1,28 +1,62 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
 interface Props {
   title: string;
-  lang?: string;
+  description?: string;
+  lang?: 'es' | 'eu' | 'en';
 }
 
-const { title, lang = 'es' } = Astro.props;
+const { title, description, lang = 'es' } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://ortzai.com');
+
+const defaultDescriptions = {
+  es: 'ORTZAI es un laboratorio de teatro independiente y escuela de artes escénicas en Vitoria-Gasteiz con producción bilingüe.',
+  eu: 'ORTZAI Gasteizko antzerki laborategi independentea eta arte eszenikoen eskola da, ekoizpen bilinguea duena.',
+  en: 'ORTZAI is an independent theatre laboratory and performing arts school in Vitoria-Gasteiz with bilingual production.'
+};
+
+const metaDescription = description || defaultDescriptions[lang];
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} class="bg-midnight-ink">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    
+    <title>{title} — ORTZAI</title>
+    <meta name="description" content={metaDescription} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} — ORTZAI`} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:image" content="/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={`${title} — ORTZAI`} />
+    <meta property="twitter:description" content={metaDescription} />
     
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <ClientRouter />
   </head>
-  <body class="bg-midnight-ink text-paper-white">
+  <body class="bg-midnight-ink text-paper-white min-h-[100dvh] overflow-x-hidden selection:bg-alert-red selection:text-midnight-ink font-body antialiased">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-6 focus:py-3 focus:bg-alert-red focus:text-midnight-ink font-display uppercase tracking-widest outline-none">
+      Skip to content
+    </a>
     <slot />
+    <Footer lang={lang} />
   </body>
 </html>

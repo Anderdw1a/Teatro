@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navigation from '../../../components/Navigation.astro';
+
+export async function getStaticPaths() {
+  const productions = await getCollection('producciones');
+  return productions.map((entry) => {
+    // entry.id looks like "es/de-profundis"
+    const [lang, ...slugParts] = entry.id.split('/');
+    const slug = slugParts.join('/').replace(/\.md$/, '');
+    return {
+      params: { lang, slug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { lang } = Astro.params as { lang: 'es' | 'eu' | 'en' };
+const { Content } = await render(entry);
+
+const backLabels = {
+  es: 'Volver',
+  eu: 'Itzuli',
+  en: 'Back'
+};
+---
+
+<BaseLayout title={entry.data.title} lang={lang}>
+  <Navigation lang={lang} />
+  
+  <main>
+    <article>
+      <header class="max-w-page mx-auto px-5 py-20 mb-32">
+        <div class="text-alert-red font-display text-[40px] mb-8 tracking-widest leading-none">{entry.data.year}</div>
+        <h1 class="text-[120px] md:text-display leading-[0.7] uppercase font-display tracking-display mb-16 max-w-[12ch]">
+          {entry.data.title}
+        </h1>
+        <p class="text-subheading font-body text-concrete-gray leading-tight max-w-[40ch]">
+          {entry.data.description}
+        </p>
+      </header>
+
+      {entry.data.image && (
+        <section class="w-full h-[70vh] bg-concrete-gray mb-32 border-y-2 border-paper-white overflow-hidden relative">
+           <img 
+            src={entry.data.image} 
+            alt={entry.data.title} 
+            class="w-full h-full object-cover grayscale" 
+           />
+           <div class="absolute inset-0 bg-alert-red mix-blend-multiply opacity-20"></div>
+           <div class="absolute bottom-10 left-10 text-paper-white font-display text-[150px] leading-none opacity-20 select-none uppercase tracking-tighter">
+             {entry.data.title}
+           </div>
+        </section>
+      )}
+
+      <div class="max-w-page mx-auto px-5 grid grid-cols-1 lg:grid-cols-12 gap-20 mb-40">
+        <div class="lg:col-span-8">
+          <div class="prose-manual font-body text-2xl leading-relaxed space-y-12">
+            <Content />
+          </div>
+        </div>
+
+        <aside class="lg:col-span-4 space-y-20">
+          {entry.data.cast && entry.data.cast.length > 0 && (
+            <div class="border-t-2 border-paper-white pt-8">
+              <h3 class="font-display text-4xl uppercase mb-12 tracking-widest text-alert-red">Reparto</h3>
+              <ul class="space-y-6">
+                {entry.data.cast.map((member) => (
+                  <li class="font-body text-2xl border-b border-paper-white/20 pb-4 last:border-0">{member}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          
+          <div class="pt-12 border-t-2 border-paper-white">
+            <a href={`/${lang}/producciones`} class="font-display text-4xl uppercase hover:text-alert-red transition-all duration-500 group flex items-center gap-4">
+              <span class="group-hover:-translate-x-4 transition-transform duration-500">&larr;</span> 
+              {backLabels[lang]}
+            </a>
+          </div>
+        </aside>
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  .prose-manual p {
+    margin-bottom: 2rem;
+  }
+  .prose-manual h2 {
+    font-family: var(--font-display);
+    font-size: 80px;
+    text-transform: uppercase;
+    margin-top: 5rem;
+    margin-bottom: 2.5rem;
+    line-height: 0.8;
+    letter-spacing: -0.02em;
+  }
+  .prose-manual h3 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    text-transform: uppercase;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    line-height: 1;
+    color: var(--color-alert-red);
+    letter-spacing: 0.05em;
+  }
+</style>

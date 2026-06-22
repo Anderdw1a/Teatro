@@ -1,0 +1,76 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  eyebrow?: string;
+  image?: string;
+  class?: string;
+  variant?: 'large' | 'small';
+  aspect?: '16/9' | '3/4' | '1/1';
+}
+
+const { 
+  href, 
+  title, 
+  eyebrow, 
+  image, 
+  class: className, 
+  variant = 'small',
+  aspect = '16/9'
+} = Astro.props;
+
+const aspectClasses = {
+  '16/9': 'aspect-[16/9]',
+  '3/4': 'aspect-[3/4]',
+  '1/1': 'aspect-square',
+};
+---
+
+<a 
+  href={href} 
+  class:list={[
+    "group block relative outline-none focus-visible:ring-2 focus-visible:ring-alert-red focus-visible:ring-offset-4 focus-visible:ring-offset-midnight-ink rounded-lg",
+    variant === 'large' ? "md:col-span-7" : "md:col-span-5 md:mt-40",
+    className
+  ]}
+  aria-label={`View details for ${title}`}
+>
+  <article class="relative">
+    <div class:list={[
+      "bg-surface-subtle overflow-hidden mb-8 border-2 border-paper-white relative transition-transform duration-duration-normal ease-smooth group-hover:scale-[1.02]",
+      aspectClasses[aspect]
+    ]}>
+      {image ? (
+        <img 
+          src={image} 
+          alt="" 
+          role="presentation"
+          class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-[filter,transform] duration-duration-slow ease-smooth"
+          loading="lazy"
+          width="800"
+          height="450"
+        />
+      ) : (
+        <div class="w-full h-full flex items-center justify-center font-display text-heading opacity-10" aria-hidden="true">
+          {eyebrow || title.charAt(0)}
+        </div>
+      )}
+      <div class="absolute inset-0 bg-surface-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-duration-normal" aria-hidden="true"></div>
+    </div>
+    
+    <div class="flex justify-between items-start gap-4">
+      <div>
+        {eyebrow && (
+          <span class="text-alert-red font-display text-2xl mb-2 block tracking-widest uppercase">{eyebrow}</span>
+        )}
+        <h2 class="text-[60px] md:text-subheading lg:text-[80px] leading-[0.8] uppercase font-display group-hover:text-alert-red transition-colors duration-duration-normal text-balance">
+          {title}
+        </h2>
+        <slot />
+      </div>
+      <div class="text-stroke font-display text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-duration-normal whitespace-nowrap hidden lg:block" aria-hidden="true">
+        VIEW — VIEW
+      </div>
+    </div>
+  </article>
+</a>

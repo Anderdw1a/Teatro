@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# AI Crawlers - Allow retrieval, block training
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://ortzai.com/sitemap-index.xml

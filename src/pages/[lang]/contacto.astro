@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'eu' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'es' | 'eu' | 'en' };
+
+const titles = {
+  es: 'Contacto',
+  eu: 'Kontaktua',
+  en: 'Contact'
+};
+
+const labels = {
+  es: { name: 'Nombre', email: 'Email', message: 'Mensaje', send: 'Enviar' },
+  eu: { name: 'Izena', email: 'Emaila', message: 'Mezua', send: 'Bidali' },
+  en: { name: 'Name', email: 'Email', message: 'Message', send: 'Send' }
+};
+
+const t = labels[lang];
+---
+
+<BaseLayout title={titles[lang]} lang={lang}>
+  <Navigation lang={lang} />
+  
+  <main class="max-w-page mx-auto px-5 py-20">
+    <header class="mb-32">
+      <h1 class="text-[120px] md:text-display leading-[0.7] uppercase font-display tracking-display mb-8">
+        {titles[lang]}
+      </h1>
+      <p class="text-subheading font-body leading-none text-concrete-gray max-w-[20ch]">
+        {lang === 'es' ? '¿Tienes alguna pregunta? Estamos aquí para ayudarte.' : 
+         lang === 'eu' ? 'Galderarik al duzu? Hemen gaude zuri laguntzeko.' : 
+         'Have a question? We are here to help.'}
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+      <div class="lg:col-span-5 space-y-16">
+        <div class="space-y-12">
+          <div>
+            <span class="block text-alert-red font-display text-2xl uppercase mb-4 tracking-widest">Email</span>
+            <a href="mailto:info@ortzai.com" class="text-subheading hover:text-alert-red transition-all duration-500 font-body block border-b-2 border-transparent hover:border-alert-red w-fit">
+              info@ortzai.com
+            </a>
+          </div>
+          <div>
+            <span class="block text-alert-red font-display text-2xl uppercase mb-4 tracking-widest">Tel</span>
+            <a href="tel:+34945206344" class="text-subheading hover:text-alert-red transition-all duration-500 font-body block border-b-2 border-transparent hover:border-alert-red w-fit">
+              +34 945 206 344
+            </a>
+          </div>
+          <div>
+            <span class="block text-alert-red font-display text-2xl uppercase mb-4 tracking-widest">Dir</span>
+            <p class="text-subheading font-body leading-tight">
+              Pintorería Kalea, 39<br/>01001 Vitoria-Gasteiz
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <form class="space-y-16">
+          <div class="group">
+            <label class="block text-concrete-gray font-display text-xl uppercase mb-2 tracking-widest group-focus-within:text-alert-red transition-colors">{t.name}</label>
+            <input 
+              type="text" 
+              class="w-full bg-transparent border-b-2 border-paper-white py-4 focus:outline-none focus:border-alert-red transition-colors font-body text-subheading" 
+              required
+            />
+          </div>
+          <div class="group">
+            <label class="block text-concrete-gray font-display text-xl uppercase mb-2 tracking-widest group-focus-within:text-alert-red transition-colors">{t.email}</label>
+            <input 
+              type="email" 
+              class="w-full bg-transparent border-b-2 border-paper-white py-4 focus:outline-none focus:border-alert-red transition-colors font-body text-subheading" 
+              required
+            />
+          </div>
+          <div class="group">
+            <label class="block text-concrete-gray font-display text-xl uppercase mb-2 tracking-widest group-focus-within:text-alert-red transition-colors">{t.message}</label>
+            <textarea 
+              rows="4" 
+              class="w-full bg-transparent border-b-2 border-paper-white py-4 focus:outline-none focus:border-alert-red transition-colors font-body text-subheading resize-none"
+              required
+            ></textarea>
+          </div>
+          <button 
+            type="submit" 
+            class="w-full py-8 bg-paper-white text-midnight-ink font-display uppercase text-4xl tracking-widest hover:bg-alert-red hover:text-paper-white transition-all duration-500 tactile"
+          >
+            {t.send}
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

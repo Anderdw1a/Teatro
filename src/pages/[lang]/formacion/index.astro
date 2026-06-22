@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navigation from '../../../components/Navigation.astro';
+import Hero from '../../../components/Hero.astro';
+import Button from '../../../components/Button.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'es' } },
+    { params: { lang: 'eu' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params as { lang: 'es' | 'eu' | 'en' };
+
+const courses = await getCollection('formacion', ({ data }) => {
+  return data.lang === lang;
+});
+
+const titles = {
+  es: 'Formación',
+  eu: 'Prestakuntza',
+  en: 'Training'
+};
+
+const labels = {
+  es: { instructor: 'Profesor', duration: 'Duración', enroll: 'Inscribirse' },
+  eu: { instructor: 'Irakaslea', duration: 'Iraupena', enroll: 'Izena eman' },
+  en: { instructor: 'Instructor', duration: 'Duration', enroll: 'Enroll' }
+};
+
+const t = labels[lang];
+---
+
+<BaseLayout title={titles[lang]} lang={lang}>
+  <Navigation lang={lang} />
+  
+  <main>
+    <Hero title={titles[lang]} />
+
+    <div class="max-w-page mx-auto px-5 mb-40 divide-y-2 divide-paper-white">
+      {courses.map((course, index) => (
+        <article class="py-16 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-12 group hover:bg-alert-red px-8 -mx-8 transition-colors duration-duration-normal ease-smooth">
+          <div class="flex-1 space-y-4">
+            <div class="font-body text-alert-red group-hover:text-midnight-ink transition-colors text-xl uppercase tracking-widest">
+              0{index + 1} //
+            </div>
+            <h2 class="text-[60px] md:text-subheading lg:text-[80px] font-display uppercase leading-[0.8] group-hover:text-midnight-ink transition-colors">
+              {course.data.title}
+            </h2>
+          </div>
+          
+          <div class="flex flex-col md:flex-row gap-12 lg:gap-20">
+            <div class="space-y-2">
+              <span class="block text-text-muted font-display text-sm uppercase tracking-widest group-hover:text-midnight-ink/60 transition-colors">
+                {t.instructor}
+              </span>
+              <span class="block text-2xl font-body group-hover:text-midnight-ink transition-colors">
+                {course.data.instructor}
+              </span>
+            </div>
+            <div class="space-y-2">
+              <span class="block text-text-muted font-display text-sm uppercase tracking-widest group-hover:text-midnight-ink/60 transition-colors">
+                {t.duration}
+              </span>
+              <span class="block text-2xl font-body group-hover:text-midnight-ink transition-colors">
+                {course.data.duration}
+              </span>
+            </div>
+            
+            <Button 
+              href="#" 
+              variant="ghost"
+              class="group-hover:border-midnight-ink group-hover:text-midnight-ink hover:!bg-midnight-ink hover:!text-paper-white"
+            >
+              {t.enroll}
+            </Button>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    {courses.length === 0 && (
+      <div class="max-w-page mx-auto px-5 py-40 border-t-2 border-paper-white">
+        <p class="text-[60px] font-display uppercase leading-none opacity-30 max-w-[10ch]">
+          {lang === 'es' ? 'Próximamente más cursos.' : 
+           lang === 'eu' ? 'Laster ikastaro gehiago.' : 
+           'More courses coming soon.'}
+        </p>
+      </div>
+    )}
+  </main>
+</BaseLayout>
