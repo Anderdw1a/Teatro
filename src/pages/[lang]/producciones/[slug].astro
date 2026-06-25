@@ -33,8 +33,8 @@ const backLabels = {
   <main>
     <article>
       <header class="max-w-page mx-auto px-5 py-20 mb-32">
-        <div class="text-alert-red font-display text-[40px] mb-8 tracking-widest leading-none">{entry.data.year}</div>
-        <h1 class="text-[120px] md:text-display leading-[0.7] uppercase font-display tracking-display mb-16 max-w-[12ch]">
+        <div class="text-alert-red font-display text-subheading mb-8 tracking-widest leading-none">{entry.data.year}</div>
+        <h1 class="text-display leading-[0.7] uppercase font-display tracking-display mb-16 max-w-[12ch]">
           {entry.data.title}
         </h1>
         <p class="text-subheading font-body text-concrete-gray leading-tight max-w-[40ch]">
@@ -50,7 +50,7 @@ const backLabels = {
             class="w-full h-full object-cover grayscale" 
            />
            <div class="absolute inset-0 bg-alert-red mix-blend-multiply opacity-20"></div>
-           <div class="absolute bottom-10 left-10 text-paper-white font-display text-[150px] leading-none opacity-20 select-none uppercase tracking-tighter">
+           <div class="absolute bottom-10 left-10 text-paper-white font-display text-[clamp(50px,10vw,150px)] leading-none opacity-20 select-none uppercase tracking-tighter">
              {entry.data.title}
            </div>
         </section>
@@ -93,7 +93,7 @@ const backLabels = {
   }
   .prose-manual h2 {
     font-family: var(--font-display);
-    font-size: 80px;
+    font-size: var(--text-heading);
     text-transform: uppercase;
     margin-top: 5rem;
     margin-bottom: 2.5rem;
@@ -102,7 +102,7 @@ const backLabels = {
   }
   .prose-manual h3 {
     font-family: var(--font-display);
-    font-size: 40px;
+    font-size: var(--text-subheading);
     text-transform: uppercase;
     margin-top: 3rem;
     margin-bottom: 1.5rem;

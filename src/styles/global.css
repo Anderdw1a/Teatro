@@ -18,14 +18,14 @@
   --font-body: "Helvetica Neue", sans-serif;
 
   /* Typography — Scale */
-  --text-caption: 19px;
+  --text-caption: clamp(14px, 1.5vw + 10px, 19px);
   --leading-caption: 1.32;
-  --text-subheading: 40px;
+  --text-subheading: clamp(24px, 3vw + 14px, 40px);
   --leading-subheading: 1.08;
-  --text-heading: 135px;
+  --text-heading: clamp(60px, 8vw + 20px, 135px);
   --leading-heading: 0.7;
   --tracking-heading: -0.02em;
-  --text-display: 360px;
+  --text-display: clamp(80px, 22vw + 20px, 360px);
   --leading-display: 0.7;
   --tracking-display: -0.079em;
 
